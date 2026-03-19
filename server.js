@@ -13,7 +13,7 @@ app.post('/action', (req, res) => {
     console.log("Target Device: ", deviceID);
     console.log("Action: ", newState);
 
-    res.json({ message: `Handled ${deviceID}` });
+    res.json({ message: `Switched ${deviceID} ${newState ? "ON" : "OFF"}` });
 });
 
 app.listen(8000, () => console.log("Server running"));
