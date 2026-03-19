@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Home Automation</title>
+    <link rel="stylesheet" href="/style.css">
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <div class="room-navigation">
+            <div class="room-tabs">
+                <button class="room-tab active" data-room="living-room">
+                    <i class="fas fa-couch room-icon"></i>
+                    <span>Living Room</span>
+                </button>
+                <button class="room-tab" data-room="kitchen">
+                    <i class="fas fa-utensils room-icon"></i>
+                    <span>Kitchen</span>
+                </button>
+                <button class="room-tab" data-room="bedroom">
+                    <i class="fas fa-bed room-icon"></i>
+                    <span>Bedroom</span>
+                </button>
+                <button class="room-tab" data-room="bathroom">
+                    <i class="fas fa-bath room-icon"></i>
+                    <span>Bathroom</span>
+                </button>
+                <button class="room-tab" data-room="balcony">
+                    <i class="fas fa-tree room-icon"></i>
+                    <span>Balcony</span>
+                </button>
+                <button class="room-tab" data-room="garage">
+                    <i class="fas fa-car room-icon"></i>
+                    <span>Garage</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="info-bar">
+            <div class="info-item">
+                <i class="fas fa-cloud"></i>
+                <p>28°C</p>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-sun"></i>
+                <p>500 Lux</p>
+            </div>
+            <button class="info-item action-item">
+                <i class="fas fa-cog"></i>
+                <p>Modes</p>
+            </button>
+            <button class="info-item action-item">
+                <i class="fas fa-clock"></i>
+                <p>Schedules</p>
+            </button>
+        </div>
+
+        <!-- Living Room Content -->
+        <div id="living-room-content" class="room-content">
+            <div class="room-section">
+                <div class="room-header">
+                    <h2>Living Room Devices</h2>
+                    <i class="fas fa-cog settings-icon"></i>
+                </div>
+                <div class="device-row">
+                    <div class="device-item">
+                        <div class="device-circle" data-device-type="light" data-device-id="living-light-1">
+                            <i class="fas fa-lightbulb device-icon"></i>
+                        </div>
+                        <p class="device-label">Main Light</p>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-circle fan-control" data-device-type="fan" data-device-id="living-fan-1" data-current-speed="0">
+                            <i class="fas fa-fan device-icon fan-icon"></i>
+                            <div class="fan-speed-indicator">
+                                <span class="speed-dot" data-speed="1"></span>
+                                <span class="speed-dot" data-speed="2"></span>
+                                <span class="speed-dot" data-speed="3"></span>
+                                <span class="speed-dot" data-speed="4"></span>
+                                <span class="speed-dot" data-speed="5"></span>
+                            </div>
+                        </div>
+                        <p class="device-label">Ceiling Fan</p>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-circle" data-device-type="other" data-device-id="living-tv-1">
+                            <i class="fas fa-tv device-icon"></i>
+                        </div>
+                        <p class="device-label">Smart TV</p>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-circle" data-device-type="socket" data-device-id="living-socket-1">
+                            <i class="fas fa-plug device-icon"></i>
+                        </div>
+                        <p class="device-label">Socket 1</p>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-circle" data-device-type="light" data-device-id="living-light-2">
+                            <i class="fas fa-lightbulb device-icon"></i>
+                        </div>
+                        <p class="device-label">Desk Lamp</p>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-circle" data-device-type="other" data-device-id="living-ac-1">
+                            <i class="fas fa-snowflake device-icon"></i>
+                        </div>
+                        <p class="device-label">A/C</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kitchen Content -->
+        <div id="kitchen-content" class="room-content hidden">
+            <div class="room-section">
+                <div class="room-header">
+                    <h2>Kitchen Devices</h2>
+                    <i class="fas fa-cog settings-icon"></i>
+                </div>
+                <div class="device-row">
+                    <div class="device-item">
+                        <div class="device-circle" data-device-type="light" data-device-id="kitchen-light-1">
+                            <i class="fas fa-lightbulb device-icon"></i>
+                        </div>
+                        <p class="device-label">Kitchen Light</p>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-circle fan-control" data-device-type="fan" data-device-id="kitchen-fan-1" data-current-speed="0">
+                            <i class="fas fa-fan device-icon fan-icon"></i>
+                            <div class="fan-speed-indicator">
+                                <span class="speed-dot" data-speed="1"></span>
+                                <span class="speed-dot" data-speed="2"></span>
+                                <span class="speed-dot" data-speed="3"></span>
+                                <span class="speed-dot" data-speed="4"></span>
+                                <span class="speed-dot" data-speed="5"></span>
+                            </div>
+                        </div>
+                        <p class="device-label">Exhaust Fan</p>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-circle" data-device-type="other" data-device-id="kitchen-fridge-1">
+                            <i class="fas fa-cube device-icon"></i>
+                        </div>
+                        <p class="device-label">Fridge</p>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-circle" data-device-type="socket" data-device-id="kitchen-socket-1">
+                            <i class="fas fa-plug device-icon"></i>
+                        </div>
+                        <p class="device-label">Microwave</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bedroom Content -->
+        <div id="bedroom-content" class="room-content hidden">
+            <div class="room-section">
+                <div class="room-header">
+                    <h2>Bedroom Devices</h2>
+                    <i class="fas fa-cog settings-icon"></i>
+                </div>
+                <div class="device-row">
+                    <div class="device-item">
+                        <div class="device-circle" data-device-type="light" data-device-id="bedroom-light-1">
+                            <i class="fas fa-lightbulb device-icon"></i>
+                        </div>
+                        <p class="device-label">Bedroom Light</p>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-circle fan-control" data-device-type="fan" data-device-id="bedroom-fan-1" data-current-speed="0">
+                            <i class="fas fa-fan device-icon fan-icon"></i>
+                            <div class="fan-speed-indicator">
+                                <span class="speed-dot" data-speed="1"></span>
+                                <span class="speed-dot" data-speed="2"></span>
+                                <span class="speed-dot" data-speed="3"></span>
+                                <span class="speed-dot" data-speed="4"></span>
+                                <span class="speed-dot" data-speed="5"></span>
+                            </div>
+                        </div>
+                        <p class="device-label">Fan</p>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-circle" data-device-type="other" data-device-id="bedroom-tv-1">
+                            <i class="fas fa-tv device-icon"></i>
+                        </div>
+                        <p class="device-label">TV</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bathroom Content -->
+        <div id="bathroom-content" class="room-content hidden">
+            <div class="room-section">
+                <div class="room-header">
+                    <h2>Bathroom Devices</h2>
+                    <i class="fas fa-cog settings-icon"></i>
+                </div>
+                <div class="device-row">
+                    <div class="device-item">
+                        <div class="device-circle" data-device-type="light" data-device-id="bathroom-light-1">
+                            <i class="fas fa-lightbulb device-icon"></i>
+                        </div>
+                        <p class="device-label">Bathroom Light</p>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-circle" data-device-type="other" data-device-id="bathroom-heater-1">
+                            <i class="fas fa-thermometer-half device-icon"></i>
+                        </div>
+                        <p class="device-label">Heater</p>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-circle" data-device-type="socket" data-device-id="bathroom-socket-1">
+                            <i class="fas fa-plug device-icon"></i>
+                        </div>
+                        <p class="device-label">Hairdryer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Balcony Content -->
+        <div id="balcony-content" class="room-content hidden">
+            <div class="room-section">
+                <div class="room-header">
+                    <h2>Balcony Devices</h2>
+                    <i class="fas fa-cog settings-icon"></i>
+                </div>
+                <div class="device-row">
+                    <div class="device-item">
+                        <div class="device-circle" data-device-type="light" data-device-id="balcony-light-1">
+                            <i class="fas fa-lightbulb device-icon"></i>
+                        </div>
+                        <p class="device-label">Outdoor Light</p>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-circle fan-control" data-device-type="fan" data-device-id="balcony-fan-1" data-current-speed="0">
+                            <i class="fas fa-fan device-icon fan-icon"></i>
+                            <div class="fan-speed-indicator">
+                                <span class="speed-dot" data-speed="1"></span>
+                                <span class="speed-dot" data-speed="2"></span>
+                                <span class="speed-dot" data-speed="3"></span>
+                                <span class="speed-dot" data-speed="4"></span>
+                                <span class="speed-dot" data-speed="5"></span>
+                            </div>
+                        </div>
+                        <p class="device-label">Outdoor Fan</p>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-circle" data-device-type="other" data-device-id="balcony-camera-1">
+                            <i class="fas fa-camera device-icon"></i>
+                        </div>
+                        <p class="device-label">Camera</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Garage Content -->
+        <div id="garage-content" class="room-content hidden">
+            <div class="room-section">
+                <div class="room-header">
+                    <h2>Garage Devices</h2>
+                    <i class="fas fa-cog settings-icon"></i>
+                </div>
+                <div class="device-row">
+                    <div class="device-item">
+                        <div class="device-circle" data-device-type="light" data-device-id="garage-light-1">
+                            <i class="fas fa-lightbulb device-icon"></i>
+                        </div>
+                        <p class="device-label">Garage Light</p>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-circle" data-device-type="other" data-device-id="garage-door-1">
+                            <i class="fas fa-door-open device-icon"></i>
+                        </div>
+                        <p class="device-label">Garage Door</p>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-circle" data-device-type="socket" data-device-id="garage-socket-1">
+                            <i class="fas fa-plug device-icon"></i>
+                        </div>
+                        <p class="device-label">Charger</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <button class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </button>
+            <button class="nav-item">
+                <i class="fas fa-mobile-alt"></i>
+                <span>Devices</span>
+            </button>
+            <button class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </button>
+            <button class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </button>
+        </div>
+    </div>
+</body>
+</html>
+    <script  src="/script.js"></script>
+
+  </body>
+  
+</html>
