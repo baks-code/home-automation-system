@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
 
 app.use(express.static('public'));
 app.use(express.json()); // 👈 IMPORTANT for POST data
@@ -13,8 +15,8 @@ app.post('/action', async (req, res) => {
     console.log("Target Device: ", deviceID);
     console.log("Action: ", newState);
 
-    if(deviceID == " living-light-1"){
-        await fetch("http://localhost:4000/light/on");
+    if(deviceID == "living-light-1"){
+        await fetch("http://localhost:4000/light/" + (newState ? "on" : "off"));
 
         res.json({ message: `Switched ${deviceID} ${newState ? "ON" : "OFF"}` });
     }
@@ -22,5 +24,13 @@ app.post('/action', async (req, res) => {
     
     //res.json({ message: `Switched ${deviceID} ${newState ? "ON" : "OFF"}` });
 });
+
+app.use('/camera', createProxyMiddleware({
+  target: 'http://localhost:8001',
+  pathRewrite: {
+    '^/camera': '/stream'
+  },
+  changeOrigin: true
+}));
 
 app.listen(8000, () => console.log("Server running"));
