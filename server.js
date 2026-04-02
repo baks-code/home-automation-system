@@ -16,7 +16,7 @@ app.post('/action', async (req, res) => {
     console.log("Action: ", newState);
 
     if(deviceID == "living-light-1"){
-        await fetch("http://localhost:4000/light/" + (newState ? "on" : "off"));
+        await fetch("http://127.0.0.1:4000/light/" + (newState ? "on" : "off"));
 
         res.json({ message: `Switched ${deviceID} ${newState ? "ON" : "OFF"}` });
     }
@@ -26,7 +26,7 @@ app.post('/action', async (req, res) => {
 });
 
 app.use('/camera', createProxyMiddleware({
-  target: 'http://localhost:8001',
+  target: 'http://127.0.0.1:8001',
   pathRewrite: {
     '^/camera': '/stream'
   },
