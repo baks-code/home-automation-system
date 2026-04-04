@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import RPi.GPIO as GPIO
 import urllib.parse
+import subprocess
 
 PIN = 17
 
@@ -30,6 +31,9 @@ class Handler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.end_headers()
             self.wfile.write(b"GPIO Server Running")
+
+        elif path == "/temperature":
+            print(subprocess.Popen(["python3", "temperature.py"]))
 
         else:
             self.send_response(404)
