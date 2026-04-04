@@ -13,8 +13,8 @@ window.addEventListener('load', async () => {
 // ── State ──
 const state = {
     mainLight: false,
-    flood: true,
-    sensor: true
+    property: false,
+    doorSensor: false
 };
 
 // Config per device
@@ -112,7 +112,7 @@ function closeModal() {
 async function applyToggle(device) {
     const isOn = state[device];
 
-    const success = await sendAction(device, isOn);
+    const success = await sendAction(device, !isOn);
 
     if (success) {
         state[device] = !state[device];
