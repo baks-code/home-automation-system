@@ -6,6 +6,13 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 app.use(express.static('public'));
 app.use(express.json()); // 👈 IMPORTANT for POST data
 
+//device state
+const devicesState = {
+    mainLight: false,
+    motionSensor: false,
+    doorSensor: false
+};
+
 // Route that handles button click
 app.post('/action', async (req, res) => {
     const deviceID = req.body.device_ID;
@@ -28,6 +35,8 @@ app.post('/action', async (req, res) => {
                     message: "Failed to reach device"
                 });
             }
+
+            devicesState[deviceID] = newState;
 
             // ✅ Success
             return res.json({
@@ -82,6 +91,14 @@ app.get('/temperature', async (req, res) => {
 
     } catch (err) {
         res.status(500).json({ error: "Server error" });
+    }
+});
+
+app.get('/devices-state', async (req, res) => {
+    try {
+        res.json(devicesState);
+    } catch (err) {
+        res.status(500).json({ error: "Failed to get device states" });
     }
 });
 

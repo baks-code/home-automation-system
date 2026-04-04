@@ -1,13 +1,50 @@
 window.addEventListener('load', async () => {
+
+    loadTemperatureAndHumidity();
+    loadDeviceStates()
+});
+async function loadTemperatureAndHumidity(){
     try {
         const res = await fetch('/temperature');
         const data = await res.json();
-        document.getElementById('temperature').textContent = `${data.temperature}°C`;
-        document.getElementById('humidity').textContent = `${data.humidity}%`;
+        document.getElementById('temperature').textContent = `${data.temperature ? data.temperature : "-"}°C`;
+        document.getElementById('humidity').textContent = `${data.humidity ? data.humidity : "-"}%`;
     } catch (err) {
         console.error('Could not fetch temperature:', err);
     }
-});
+}
+async function loadDeviceStates() {
+    try {
+        const res = await fetch('/devices-state');
+        const data = await res.json();
+
+        Object.keys(data).forEach(device => {
+            restoreDeviceState(device, data[device]);
+        });
+
+    } catch (err) {
+        console.error("Failed to load device states", err);
+    }
+}
+function restoreDeviceState(device, isOn) {
+    const cfg = config[device];
+
+    // save state
+    state[device] = isOn;
+
+    // Toggle pill
+    const track = document.getElementById(cfg.toggleId);
+    track.className = 'toggle-track ' + (isOn ? 'on' : 'off');
+
+    // Card class
+    const card = document.getElementById(cfg.cardId);
+    card.classList.toggle('is-on', isOn);
+    card.classList.toggle('is-off', !isOn);
+
+    // Badge text
+    const badge = document.getElementById(cfg.badgeId);
+    badge.textContent = isOn ? 'On' : 'Off';
+}
 
 
 // ── State ──
@@ -114,7 +151,7 @@ async function applyToggle(device) {
 
     if (success) {
         state[device] = !state[device];
-        
+
         // Toggle pill
         const track = document.getElementById(cfg.toggleId);
         track.className = 'toggle-track ' + (isOn ? 'on' : 'off');
