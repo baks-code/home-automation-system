@@ -26,7 +26,6 @@ const config = {
         cardId: 'main-light',
         toggleId: 'toggle-main-light',
         badgeId: 'badge-main-light',
-        type: 'light'
     },
     motionSensor: {
         label: 'Motion Sensor',
@@ -34,15 +33,13 @@ const config = {
         cardId: 'motion-sensor',
         toggleId: 'toggle-motion-sensor',
         badgeId: 'badge-motion-sensor',
-        type: 'sensor'
     },
     doorSensor: {
         label: 'Door Sensor',
         icon: 'sensors',
         cardId: 'door-sensor',
         toggleId: 'toggle-door-sensor',
-        badgeId: 'badge-door-sensor',
-        type: 'sensor'
+        badgeId: 'badge-door-sensor'
     }
 };
 
@@ -110,13 +107,14 @@ function closeModal() {
 }
 
 async function applyToggle(device) {
-    const isOn = state[device];
+    const isOn = !state[device];
+    const cfg = config[device];
 
-    const success = await sendAction(device, !isOn);
+    const success = await sendAction(device, isOn);
 
     if (success) {
         state[device] = !state[device];
-        const cfg = config[device];
+        
         // Toggle pill
         const track = document.getElementById(cfg.toggleId);
         track.className = 'toggle-track ' + (isOn ? 'on' : 'off');
