@@ -110,14 +110,12 @@ function closeModal() {
 }
 
 async function applyToggle(device) {
+    const isOn = state[device];
 
-    track.style.pointerEvents = "none";
     const success = await sendAction(device, isOn);
 
     if (success) {
-        track.style.pointerEvents = "auto";
         state[device] = !state[device];
-        const isOn = state[device];
         const cfg = config[device];
         // Toggle pill
         const track = document.getElementById(cfg.toggleId);

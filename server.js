@@ -15,18 +15,55 @@ app.post('/action', async (req, res) => {
     console.log("Target Device: ", deviceID);
     console.log("Action: ", newState);
 
-    if (deviceID == "living-light-1") {
-        await fetch("http://127.0.0.1:4000/light/" + (newState ? "on" : "off"));
+    try {
+        if (deviceID === "mainLight") {
 
-        res.json({ message: `Switched ${deviceID} ${newState ? "ON" : "OFF"}` });
+            const response = await fetch(
+                "http://127.0.0.1:4000/light/" + (newState ? "on" : "off")
+            );
+
+            if (!response.ok) {
+                return res.status(500).json({
+                    success: false,
+                    message: "Failed to reach device"
+                });
+            }
+
+            // ✅ Success
+            return res.json({
+                success: true,
+                message: `Switched ${deviceID} ${newState ? "ON" : "OFF"}`
+            });
+        }
+    } catch (err) {
+        console.error("Error communicating with device:", err);
+        return res.status(500).json({
+            success: false,
+            message: "Error communicating with device"
+        });
     }
 
     //res.json({ message: `Switched ${deviceID} ${newState ? "ON" : "OFF"}` });
 });
 
 app.get('/temperature', async (req, res) => {
+    const MAX_RETRIES = 5;
+    const DELAY_MS = 500;
 
-    text = "26.9,52.7";
+    try {
+        for (let i = 0; i < MAX_RETRIES; i++) {
+            try {
+                const response = await fetch("http://127.0.0.1:4000/temperature");
+
+                if (!response.ok) {
+                    throw new Error("Bad response");
+                }
+
+                const text = await response.text();
+
+                if (text === "error" || !text.includes(",")) {
+                    throw new Error("Sensor error");
+                }
 
                 const [temperature, humidity] = text.split(",");
 
@@ -34,42 +71,18 @@ app.get('/temperature', async (req, res) => {
                     temperature: parseFloat(temperature),
                     humidity: parseFloat(humidity)
                 });
-    // const MAX_RETRIES = 5;
-    // const DELAY_MS = 500;
 
-    // try {
-    //     for (let i = 0; i < MAX_RETRIES; i++) {
-    //         try {
-    //             const response = await fetch("http://127.0.0.1:4000/temperature");
+            } catch (err) {
+                // retry after delay
+                await new Promise(resolve => setTimeout(resolve, DELAY_MS));
+            }
+        }
 
-    //             if (!response.ok) {
-    //                 throw new Error("Bad response");
-    //             }
+        res.status(500).json({ error: "Failed after 5 retries" });
 
-    //             const text = await response.text();
-
-    //             if (text === "error" || !text.includes(",")) {
-    //                 throw new Error("Sensor error");
-    //             }
-
-    //             const [temperature, humidity] = text.split(",");
-
-    //             return res.json({
-    //                 temperature: parseFloat(temperature),
-    //                 humidity: parseFloat(humidity)
-    //             });
-
-    //         } catch (err) {
-    //             // retry after delay
-    //             await new Promise(resolve => setTimeout(resolve, DELAY_MS));
-    //         }
-    //     }
-
-    //     res.status(500).json({ error: "Failed after 5 retries" });
-
-    // } catch (err) {
-    //     res.status(500).json({ error: "Server error" });
-    // }
+    } catch (err) {
+        res.status(500).json({ error: "Server error" });
+    }
 });
 
 app.use('/camera', createProxyMiddleware({
