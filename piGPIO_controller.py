@@ -33,7 +33,11 @@ class Handler(BaseHTTPRequestHandler):
             self.wfile.write(b"GPIO Server Running")
 
         elif path == "/temperature":
-            print(subprocess.Popen(["python3", "temperature.py"]))
+            temp_hum = subprocess.run(["python3", "temperature.py"], capture_output=True, text=True).stdout.strip()
+            self.send_response(200)
+            self.send_header("Content-type", "text/plain")
+            self.end_headers()
+            self.wfile.write(temp_hum.encode())
 
         else:
             self.send_response(404)
