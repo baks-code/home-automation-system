@@ -15,29 +15,76 @@ app.post('/action', async (req, res) => {
     console.log("Target Device: ", deviceID);
     console.log("Action: ", newState);
 
-    if(deviceID == "living-light-1"){
+    if (deviceID == "living-light-1") {
         await fetch("http://127.0.0.1:4000/light/" + (newState ? "on" : "off"));
 
         res.json({ message: `Switched ${deviceID} ${newState ? "ON" : "OFF"}` });
     }
 
-    
     //res.json({ message: `Switched ${deviceID} ${newState ? "ON" : "OFF"}` });
 });
 
+app.get('/temperature', async (req, res) => {
+
+    text = "26.9,52.7";
+
+                const [temperature, humidity] = text.split(",");
+
+                return res.json({
+                    temperature: parseFloat(temperature),
+                    humidity: parseFloat(humidity)
+                });
+    // const MAX_RETRIES = 5;
+    // const DELAY_MS = 500;
+
+    // try {
+    //     for (let i = 0; i < MAX_RETRIES; i++) {
+    //         try {
+    //             const response = await fetch("http://127.0.0.1:4000/temperature");
+
+    //             if (!response.ok) {
+    //                 throw new Error("Bad response");
+    //             }
+
+    //             const text = await response.text();
+
+    //             if (text === "error" || !text.includes(",")) {
+    //                 throw new Error("Sensor error");
+    //             }
+
+    //             const [temperature, humidity] = text.split(",");
+
+    //             return res.json({
+    //                 temperature: parseFloat(temperature),
+    //                 humidity: parseFloat(humidity)
+    //             });
+
+    //         } catch (err) {
+    //             // retry after delay
+    //             await new Promise(resolve => setTimeout(resolve, DELAY_MS));
+    //         }
+    //     }
+
+    //     res.status(500).json({ error: "Failed after 5 retries" });
+
+    // } catch (err) {
+    //     res.status(500).json({ error: "Server error" });
+    // }
+});
+
 app.use('/camera', createProxyMiddleware({
-  target: 'http://192.168.0.141:8001',
-  pathRewrite: {
-    '^/camera': '/stream'
-  },
-  changeOrigin: true,
-  ws: true,
-  selfHandleResponse: false,
-  onProxyRes: function (proxyRes, req, res) {
-    proxyRes.headers['Cache-Control'] = 'no-cache, private';
-    // Remove any content-length that could truncate the stream
-    delete proxyRes.headers['content-length'];
-  }
+    target: 'http://192.168.0.141:8001',
+    pathRewrite: {
+        '^/camera': '/stream'
+    },
+    changeOrigin: true,
+    ws: true,
+    selfHandleResponse: false,
+    onProxyRes: function (proxyRes, req, res) {
+        proxyRes.headers['Cache-Control'] = 'no-cache, private';
+        // Remove any content-length that could truncate the stream
+        delete proxyRes.headers['content-length'];
+    }
 }));
 
 app.listen(8000, () => console.log("Server running"));

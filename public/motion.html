@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Motion History | Atmospheric Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "on-primary": "#ffffff",
+          "surface-dim": "#0a0a0c",
+          "surface-container-highest": "#33353f",
+          "background": "#050507",
+          "on-surface": "#f1f1f1",
+          "secondary-fixed": "#3e3e42",
+          "on-surface-variant": "#a1a3af",
+          "surface-container-high": "#282a33",
+          "surface-bright": "#1c1d24",
+          "tertiary": "#8e9092",
+          "primary": "#2962ff",
+          "on-error-container": "#ffdad6",
+          "secondary": "#919194",
+          "inverse-surface": "#f1f1f1",
+          "outline": "#8c8e9d",
+          "on-secondary-fixed-variant": "#c7c6c6",
+          "tertiary-fixed": "#474747",
+          "outline-variant": "#434656",
+          "on-background": "#f1f1f1",
+          "on-error": "#690005",
+          "error": "#ffb4ab",
+          "inverse-on-surface": "#1a1c1c",
+          "surface": "#050507",
+          "primary-fixed": "#dce1ff",
+          "surface-variant": "#434656",
+          "on-tertiary": "#2d2f31",
+          "on-primary-fixed": "#001550",
+          "surface-container": "#1c1d24",
+          "inverse-primary": "#0049db",
+          "tertiary-container": "#464747",
+          "on-primary-fixed-variant": "#003ab3",
+          "on-primary-container": "#dce1ff",
+          "surface-container-low": "#111218",
+          "secondary-container": "#47474a",
+          "primary-fixed-dim": "#b6c4ff",
+          "primary-container": "#2962ff",
+          "error-container": "#93000a",
+          "on-secondary-fixed": "#f1f1f1",
+          "on-secondary-container": "#e4e2e1",
+          "surface-container-lowest": "#050507",
+          "surface-tint": "#2962ff",
+          "on-secondary": "#1a1c1c"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.25rem",
+          "lg": "0.5rem",
+          "xl": "0.75rem",
+          "full": "9999px"
+        },
+        "fontFamily": {
+          "headline": ["Inter"],
+          "body": ["Inter"],
+          "label": ["Inter"]
+        }
+      },
+    },
+  }
+</script>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+
+  /* Exact match to login .glass-panel */
+  .glass-panel {
+    background: rgba(28, 29, 36, 0.4);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
+    border-right: 1px solid rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  }
+
+  /* Exact match to login .bg-mesh */
+  .bg-mesh {
+    background-color: #050507;
+    background-image:
+      radial-gradient(at 0% 0%,    rgba(41, 98, 255, 0.08) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(41, 98, 255, 0.12) 0px, transparent 50%),
+      radial-gradient(at 100% 0%,   rgba(182, 196, 255, 0.05) 0px, transparent 50%);
+  }
+
+  .obsidian-card {
+    background: rgba(28, 29, 36, 0.4);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .history-row:hover {
+    background: rgba(41, 98, 255, 0.07);
+  }
+
+  #imageModal.hidden {
+    display: none;
+  }
+</style>
+</head>
+
+<body class="bg-mesh font-body text-on-surface flex flex-col min-h-screen">
+
+  <!-- Ambient glows — identical to login page -->
+  <div class="fixed top-[-10%] right-[-5%] w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+  <div class="fixed bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
+
+  <div class="flex  min-h-screen ">
+
+  <!-- Side Navigation -->
+  <aside class="hidden lg:flex flex-col p-6 sticky top-0 h-screen w-64 border-r border-white/5 glass-panel font-['Inter'] text-sm font-medium relative z-10">
+
+    <nav class="flex-1 space-y-1">
+      <!-- makes selection <a class="flex items-center gap-3 px-4 py-3 bg-primary/15 text-primary rounded-xl border border-primary/20 transition-all duration-200" href="#"> -->
+        <!-- <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-white/5 rounded-xl transition-all duration-200" href="#"> -->
+      <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-white/5 rounded-xl transition-all duration-200" href="dashboard.html">
+        <span class="material-symbols-outlined text-[18px]">dashboard</span>
+        <span>Dashboard</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-3 bg-primary/15 text-primary rounded-xl border border-primary/20 transition-all duration-200" href="#">
+        <span class="material-symbols-outlined text-[18px]">history</span>
+        <span>Motion History</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-white/5 rounded-xl transition-all duration-200" href="#">
+        <span class="material-symbols-outlined text-[18px]">settings</span>
+        <span>Account Settings</span>
+      </a>
+    </nav>
+
+    <div class="mt-auto pt-6 border-t border-white/5 space-y-1">
+      <button
+        class="w-full py-3 px-4 bg-error-container text-on-error-container rounded-xl font-bold text-xs uppercase tracking-widest mb-3 hover:brightness-125 transition-all"
+        onclick="alert('Emergency Panic Triggered')">
+        Emergency Panic
+      </button>
+      <a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-on-surface text-xs transition-colors rounded-xl hover:bg-white/5" href="#">
+        <span class="material-symbols-outlined text-sm">help</span>
+        <span>Support</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-on-surface text-xs transition-colors rounded-xl hover:bg-white/5" href="#">
+        <span class="material-symbols-outlined text-sm">description</span>
+        <span>Logs</span>
+      </a>
+    </div>
+  </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6 md:p-10 max-w-6xl mx-auto w-full">
+
+      <!-- Header -->
+      <header class="mb-10">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <h1 class="text-3xl md:text-4xl font-black tracking-tighter text-on-surface mb-2">Motion History</h1>
+            <p class="text-on-surface-variant text-base">Optimized event log for system performance.</p>
+          </div>
+          <div class="flex items-center space-x-1 glass-panel p-1 rounded-xl flex-shrink-0">
+            <button class="px-4 py-2 rounded-lg bg-primary text-white shadow-sm text-xs font-bold uppercase tracking-widest">All Events</button>
+            <button class="px-4 py-2 rounded-lg text-xs font-bold text-on-surface-variant hover:text-on-surface transition-colors uppercase tracking-widest">Critical Only</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Latest Motion Capture -->
+      <section class="mb-12">
+        <h2 class="text-[10px] font-bold text-primary uppercase tracking-[0.2em] mb-4">Latest Motion Capture</h2>
+        <div class="relative overflow-hidden rounded-[2rem] obsidian-card group">
+          <div class="aspect-[21/9] w-full relative">
+            <img alt="Latest motion capture"
+              class="w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjK7wup-5zYnA849GraiT5IVNW84J0HBJB-UJPo4roIkvIpyHeidczJvgEIvu5S58BtbL-VQmTehO1Rs3UpSqnDM7MF1n9sVdmUfBD3rEMBG-pWR4IJ5ytMmWAclV43Lj8FV_WP8YWDS1x52Tn_r2FY2DImtMr2LrF-7aHCzZW-jJcGSKw6Jlw6jv_cDJYJIsvcCXgGfJHtBh_aHIwi2K6-cof7pTxs3ANTkNebUrEMH4GxO_UWWOxYfr1Tdtf09EK8cIfrE0N1Y38"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-surface-dim/90 via-transparent to-transparent"></div>
+            <!-- Live badge — matches login's glow style -->
+            <div class="absolute top-6 left-6 glass-panel px-3 py-1.5 rounded-full flex items-center space-x-2">
+              <span class="w-2 h-2 rounded-full bg-error animate-pulse shadow-[0_0_8px_rgba(255,180,171,0.8)]"></span>
+              <span class="text-[10px] font-black uppercase tracking-widest text-on-surface">Live</span>
+            </div>
+            <div class="absolute bottom-6 left-8">
+              <h3 class="text-2xl font-bold text-on-surface">Unrecognized Vehicle</h3>
+              <p class="text-on-surface-variant text-sm mt-1">Main Driveway • 14:30:45 Today</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- History Log -->
+      <section>
+        <h2 class="text-[10px] font-bold text-primary uppercase tracking-[0.2em] mb-4">History Log</h2>
+        <div class="obsidian-card rounded-[2rem] overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-white/8 text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">
+                  <th class="px-6 py-4">Event Type</th>
+                  <th class="px-6 py-4">Location</th>
+                  <th class="px-6 py-4">Timestamp</th>
+                  <th class="px-6 py-4 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="history-row cursor-pointer transition-colors border-b border-white/5"
+                    onclick="openModal('Human Activity', 'Front Door', '12:15 PM', 'https://lh3.googleusercontent.com/aida-public/AB6AXuBCq-Rq_Qe-mau44RXNWruxo_7zXgXl1NntReqHWKxwKpS9_ZYV-ntL2wTaO2cDHqRFtJqqmc8CPm5k35yrZY9P0gqm3ymhHG9DUt-u24u8Ddfaz4xVkiugc-rr8xOax-kCIHtAXQc__-EVyqcbmMl7kqEDmhFeToPCyGV63KF-zIOfIKerJTcAe8l3bEE7mE2SC82x9qDWv7A9Lne-NmX2wMeVFmRy8czxNCl1Y3mjP1kb7EsnhwRdzG_igjH4asQOrmPK43CegwiC')">
+                  <td class="px-6 py-5">
+                    <div class="flex items-center space-x-3">
+                      <span class="material-symbols-outlined text-primary-fixed-dim">person</span>
+                      <span class="font-bold text-on-surface">Human Activity</span>
+                    </div>
+                  </td>
+                  <td class="px-6 py-5 text-on-surface-variant">Front Door</td>
+                  <td class="px-6 py-5 text-on-surface-variant">Mar 24, 12:15 PM</td>
+                  <td class="px-6 py-5 text-right text-primary font-bold text-xs uppercase tracking-widest">View</td>
+                </tr>
+                <tr class="history-row cursor-pointer transition-colors border-b border-white/5"
+                    onclick="openModal('Animal Alert', 'Backyard Pool', '10:04 AM', 'https://lh3.googleusercontent.com/aida-public/AB6AXuB5cWt4w8RqqYSKxh0V5C9Ik7nAX1pAJJA9OJO3LL4iVSxJ6zTcOw_r9Pufjx5nZcidDr-mzXhOP3OeAB_ME_t8BFNfi_m42-mf5p4D_hXufH-E_IBLGy2tNwubfbpeOZmo3I4Rddzl4iygPHs8H3BpTeZJRGeL3RjR-CkGwtrFPiS1mlNXVWlDViJSKmLqYFZ0GocA3BASw4EO7Z4YHab2NZvDrjdejH0AELBJldpswwpvl4KHuxlSq5StAM5_GQAW2AnJ6QAmFy0K')">
+                  <td class="px-6 py-5">
+                    <div class="flex items-center space-x-3">
+                      <span class="material-symbols-outlined" style="color:#6fcf97">pets</span>
+                      <span class="font-bold text-on-surface">Animal Alert</span>
+                    </div>
+                  </td>
+                  <td class="px-6 py-5 text-on-surface-variant">Backyard Pool</td>
+                  <td class="px-6 py-5 text-on-surface-variant">Mar 24, 10:04 AM</td>
+                  <td class="px-6 py-5 text-right text-primary font-bold text-xs uppercase tracking-widest">View</td>
+                </tr>
+                <tr class="history-row cursor-pointer transition-colors border-b border-white/5"
+                    onclick="openModal('Status Change', 'Kitchen Interior', '08:22 AM', 'https://lh3.googleusercontent.com/aida-public/AB6AXuALcV_btKr7isi14uR6wbecn5p8DqoMItN5DjqOpAimS9hLXelnF1KM_DrXK3QVXRLV2AotHdOoL2bZ59MC_KrBlJLYyyEKBl0oVDA0XY2v2bY5tgy3laQD2te9yNd9l7av7bfyGDBHDSp5UWB9WV2obkq5GxeKcW0wj5b2jWGcXkn_jjmySisyKGuuG9LVIDOJ4M651FqTwC--Q6RBgMDdb9Q4XCEanFRXyYeBCSE9ERbEhziGykVcL_Z00iZG_fV-lhnNqxHCFEvP')">
+                  <td class="px-6 py-5">
+                    <div class="flex items-center space-x-3">
+                      <span class="material-symbols-outlined" style="color:#f2c94c">lightbulb</span>
+                      <span class="font-bold text-on-surface">Status Change</span>
+                    </div>
+                  </td>
+                  <td class="px-6 py-5 text-on-surface-variant">Kitchen Interior</td>
+                  <td class="px-6 py-5 text-on-surface-variant">Mar 24, 08:22 AM</td>
+                  <td class="px-6 py-5 text-right text-primary font-bold text-xs uppercase tracking-widest">View</td>
+                </tr>
+                <tr class="history-row cursor-pointer transition-colors border-b border-white/5"
+                    onclick="openModal('Entry Alert', 'Garage Side Door', '03:45 AM', 'https://lh3.googleusercontent.com/aida-public/AB6AXuAzUFi0b-MMRZQdns0SNLu1qLXxFNCU30ml48Qn9R1nvPK5wgVuXr1LCK0vMypMbF7VvXIOOavQxGgyaSyghMLhwU6aNzG82Gd1r2fh_YTufnxfYgleduXpRDCqqhWueWxV_3KZ8GrTdGhZl9JKywWGyakS9KqKh2qt84UY8jhf5QSuTAmn6e8PUHpXYkcCwqdr7p1-oh3aNwZM3mkFVQ2WYaT6H8Mw3cvyz2gFLvxrDzSbTbBBeyfYV7RUsi5T9Hk7dJj3xDRkgkmf')">
+                  <td class="px-6 py-5">
+                    <div class="flex items-center space-x-3">
+                      <span class="material-symbols-outlined text-error">door_open</span>
+                      <span class="font-bold text-on-surface">Entry Alert</span>
+                    </div>
+                  </td>
+                  <td class="px-6 py-5 text-on-surface-variant">Garage Side Door</td>
+                  <td class="px-6 py-5 text-on-surface-variant">Mar 24, 03:45 AM</td>
+                  <td class="px-6 py-5 text-right text-primary font-bold text-xs uppercase tracking-widest">View</td>
+                </tr>
+                <tr class="history-row cursor-pointer transition-colors"
+                    onclick="openModal('Motion Log', 'Upper Hallway', '11:58 PM', 'https://lh3.googleusercontent.com/aida-public/AB6AXuC6FMSaD0Ch-v0cyb-36sYE7afsfpsiv9Xn-QIIiq1IRSDWkQmMtMdw-9WLqPaQObsk80XqvYjpJudhyvheNNpCsQqefrIkkGqamX9wQlSkMKLUmRFMejv_83Q-LvGh3bumeCSTobwE9V4YSyOePKNO0hHZAfPzaeRYFYONkhJcYgMd4NfE5DGr-HoPVMJha5yy_SPtepE3YplWnTybavJKVaIa5o40m-gAgZMl1CLOKsq1f8IpBg8W9CnVbTPoNuXWM-ngJAX1_f7D')">
+                  <td class="px-6 py-5">
+                    <div class="flex items-center space-x-3">
+                      <span class="material-symbols-outlined text-outline">motion_sensor_active</span>
+                      <span class="font-bold text-on-surface">Motion Log</span>
+                    </div>
+                  </td>
+                  <td class="px-6 py-5 text-on-surface-variant">Upper Hallway</td>
+                  <td class="px-6 py-5 text-on-surface-variant">Mar 23, 11:58 PM</td>
+                  <td class="px-6 py-5 text-right text-primary font-bold text-xs uppercase tracking-widest">View</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Image Modal -->
+  <div class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-surface-dim/80 backdrop-blur-sm" id="imageModal">
+    <div class="obsidian-card max-w-4xl w-full rounded-[2.5rem] overflow-hidden relative shadow-[0_40px_80px_rgba(0,0,0,0.6)]" onclick="event.stopPropagation()">
+      <button
+        class="absolute top-6 right-6 z-10 w-10 h-10 rounded-full glass-panel flex items-center justify-center text-on-surface hover:bg-white/15 transition-colors"
+        onclick="closeModal()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+      <div class="p-2">
+        <img alt="Snapshot" class="w-full aspect-video object-cover rounded-[2rem]" id="modalImage"/>
+      </div>
+      <div class="p-8">
+        <div class="flex justify-between items-end">
+          <div>
+            <h2 class="text-2xl font-bold text-on-surface mb-1" id="modalTitle">Event Snapshot</h2>
+            <p class="text-on-surface-variant" id="modalDetails"></p>
+          </div>
+          <button class="bg-primary text-on-primary px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest shadow-[0_8px_20px_rgba(41,98,255,0.3)] hover:shadow-[0_12px_28px_rgba(41,98,255,0.45)] hover:-translate-y-0.5 transition-all duration-300">
+            Download Snapshot
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openModal(type, location, time, imgSrc) {
+      const modal = document.getElementById('imageModal');
+      document.getElementById('modalImage').src = imgSrc;
+      document.getElementById('modalTitle').innerText = type;
+      document.getElementById('modalDetails').innerText = `${location} • Detected at ${time}`;
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('imageModal').classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+    document.getElementById('imageModal').addEventListener('click', closeModal);
+  </script>
+
+</body></html>

@@ -1,331 +1,196 @@
 <!DOCTYPE html>
-<html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <title>Home Automation</title>
-    <link rel="stylesheet" href="/style.css">
+<html class="dark" lang="en">
 
-  </head>
-    
-  <body>
-  <!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Home Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Login | Atmospheric Intelligence</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#0a0a0c",
+                        "surface-container-highest": "#33353f",
+                        "background": "#050507",
+                        "on-surface": "#f1f1f1",
+                        "secondary-fixed": "#3e3e42",
+                        "on-surface-variant": "#a1a3af",
+                        "surface-container-high": "#282a33",
+                        "surface-bright": "#1c1d24",
+                        "tertiary": "#8e9092",
+                        "primary": "#2962ff",
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#919194",
+                        "inverse-surface": "#f1f1f1",
+                        "outline": "#8c8e9d",
+                        "on-secondary-fixed-variant": "#c7c6c6",
+                        "tertiary-fixed": "#474747",
+                        "outline-variant": "#434656",
+                        "on-background": "#f1f1f1",
+                        "on-error": "#690005",
+                        "error": "#ffb4ab",
+                        "inverse-on-surface": "#1a1c1c",
+                        "surface": "#050507",
+                        "primary-fixed": "#dce1ff",
+                        "surface-variant": "#434656",
+                        "tertiary-fixed-dim": "#464747",
+                        "on-tertiary": "#2d2f31",
+                        "on-primary-fixed": "#001550",
+                        "on-tertiary-fixed-variant": "#c7c6c6",
+                        "on-tertiary-fixed": "#e3e2e2",
+                        "surface-container": "#1c1d24",
+                        "inverse-primary": "#0049db",
+                        "tertiary-container": "#464747",
+                        "on-primary-fixed-variant": "#003ab3",
+                        "on-primary-container": "#dce1ff",
+                        "surface-container-low": "#111218",
+                        "secondary-container": "#47474a",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "primary-container": "#2962ff",
+                        "error-container": "#93000a",
+                        "on-secondary-fixed": "#f1f1f1",
+                        "on-secondary-container": "#e4e2e1",
+                        "on-tertiary-container": "#e3e2e2",
+                        "secondary-fixed-dim": "#47474a",
+                        "surface-container-lowest": "#050507",
+                        "surface-tint": "#2962ff",
+                        "on-secondary": "#1a1c1c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .glass-panel {
+            background: rgba(28, 29, 36, 0.4);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .bg-mesh {
+            background-color: #050507;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(41, 98, 255, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(41, 98, 255, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(182, 196, 255, 0.05) 0px, transparent 50%);
+        }
+    </style>
 </head>
-<body>
-    <div class="app">
-        <div class="room-navigation">
-            <div class="room-tabs">
-                <button class="room-tab active" data-room="living-room">
-                    <i class="fas fa-couch room-icon"></i>
-                    <span>Living Room</span>
-                </button>
-<!--                <button class="room-tab" data-room="kitchen">-->
-<!--                    <i class="fas fa-utensils room-icon"></i>-->
-<!--                    <span>Kitchen</span>-->
-<!--                </button>-->
-<!--                <button class="room-tab" data-room="bedroom">-->
-<!--                    <i class="fas fa-bed room-icon"></i>-->
-<!--                    <span>Bedroom</span>-->
-<!--                </button>-->
-<!--                <button class="room-tab" data-room="bathroom">-->
-<!--                    <i class="fas fa-bath room-icon"></i>-->
-<!--                    <span>Bathroom</span>-->
-<!--                </button>-->
-<!--                <button class="room-tab" data-room="balcony">-->
-<!--                    <i class="fas fa-tree room-icon"></i>-->
-<!--                    <span>Balcony</span>-->
-<!--                </button>-->
-<!--                <button class="room-tab" data-room="garage">-->
-<!--                    <i class="fas fa-car room-icon"></i>-->
-<!--                    <span>Garage</span>-->
-<!--                </button>-->
-            </div>
-        </div>
 
-        <div class="info-bar">
-            <div class="info-item">
-                <i class="fas fa-cloud"></i>
-                <p>28°C</p>
-            </div>
-            <!-- <div class="info-item">
-                <i class="fas fa-sun"></i>
-                <p>500 Lux</p>
-            </div>
-            <button class="info-item action-item">
-                <i class="fas fa-cog"></i>
-                <p>Modes</p>
-            </button>
-            <button class="info-item action-item">
-                <i class="fas fa-clock"></i>
-                <p>Schedules</p>
-            </button> -->
-        </div>
-
-        <!-- Living Room Content -->
-        <div id="living-room-content" class="room-content">
-            <div class="room-section">
-                <div class="room-header">
-                    <h2>Living Room Devices</h2>
-                    <i class="fas fa-cog settings-icon"></i>
+<body class="bg-mesh font-body min-h-screen flex flex-col selection:bg-primary/30 selection:text-white">
+    <main class="flex-grow flex items-center justify-center p-6 md:p-12 relative overflow-hidden">
+        <div class="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px]"></div>
+        <div class="w-full max-w-md z-10">
+            <div class="mb-12 text-center">
+                <div
+                    class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary mb-6 shadow-[0_20px_40px_rgba(41,98,255,0.3)]">
+                    <span class="material-symbols-outlined text-on-primary text-3xl" data-weight="fill">shield</span>
                 </div>
-                <div class="device-row">
-                    <div class="device-item">
-                        <div class="device-circle" data-device-type="light" data-device-id="living-light-1">
-                            <i class="fas fa-lightbulb device-icon"></i>
-                        </div>
-                        <p class="device-label">Light</p>
-                    </div>
-                    <!-- <div class="device-item">
-                        <div class="device-circle fan-control" data-device-type="fan" data-device-id="living-fan-1" data-current-speed="0">
-                            <i class="fas fa-fan device-icon fan-icon"></i>
-                            <div class="fan-speed-indicator">
-                                <span class="speed-dot" data-speed="1"></span>
-                                <span class="speed-dot" data-speed="2"></span>
-                                <span class="speed-dot" data-speed="3"></span>
-                                <span class="speed-dot" data-speed="4"></span>
-                                <span class="speed-dot" data-speed="5"></span>
+                <h1 class="text-4xl font-extrabold tracking-tighter text-on-surface mb-2">Atmospheric Intelligence</h1>
+                <p class="text-on-surface-variant text-sm font-medium tracking-wide">SECURE ACCESS TO YOUR DIGITAL
+                    GUARDIAN</p>
+            </div>
+            <div
+                class="glass-panel rounded-[2rem] p-8 md:p-10 shadow-[0_40px_80px_rgba(0,0,0,0.5)] border border-white/5">
+                <form action="dashboard.html" class="space-y-6">
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-2 px-1"
+                            for="username">User Identity</label>
+                        <div class="relative group">
+                            <div
+                                class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-outline group-focus-within:text-primary transition-colors">
+                                <span class="material-symbols-outlined text-[20px]">person</span>
                             </div>
+                            <input
+                                class="w-full bg-surface-container-low border border-white/5 rounded-xl py-4 pl-12 pr-4 text-on-surface placeholder:text-outline/40 focus:ring-2 focus:ring-primary/40 focus:bg-surface-bright focus:border-primary/50 transition-all duration-300"
+                                id="username" name="username" placeholder="Enter username" type="text" />
                         </div>
-                        <p class="device-label">Ceiling Fan</p>
-                    </div> -->
-<!--                    <div class="device-item">-->
-<!--                        <div class="device-circle" data-device-type="other" data-device-id="living-tv-1">-->
-<!--                            <i class="fas fa-tv device-icon"></i>-->
-<!--                        </div>-->
-<!--                        <p class="device-label">Smart TV</p>-->
-<!--                    </div>-->
-<!--                    <div class="device-item">-->
-<!--                        <div class="device-circle" data-device-type="socket" data-device-id="living-socket-1">-->
-<!--                            <i class="fas fa-plug device-icon"></i>-->
-<!--                        </div>-->
-<!--                        <p class="device-label">Socket 1</p>-->
-<!--                    </div>-->
-<!--                    <div class="device-item">-->
-<!--                        <div class="device-circle" data-device-type="light" data-device-id="living-light-2">-->
-<!--                            <i class="fas fa-lightbulb device-icon"></i>-->
-<!--                        </div>-->
-<!--                        <p class="device-label">Desk Lamp</p>-->
-<!--                    </div>-->
-<!--                    <div class="device-item">-->
-<!--                        <div class="device-circle" data-device-type="other" data-device-id="living-ac-1">-->
-<!--                            <i class="fas fa-snowflake device-icon"></i>-->
-<!--                        </div>-->
-<!--                        <p class="device-label">A/C</p>-->
-<!--                    </div>-->
-                </div>
-            </div>
-            <div class="room-section">
-                <img src="/camera" width="640" />
-            </div>
-        </div>
-
-        <!-- Kitchen Content -->
-        <div id="kitchen-content" class="room-content hidden">
-            <div class="room-section">
-                <div class="room-header">
-                    <h2>Kitchen Devices</h2>
-                    <i class="fas fa-cog settings-icon"></i>
-                </div>
-                <div class="device-row">
-                    <div class="device-item">
-                        <div class="device-circle" data-device-type="light" data-device-id="kitchen-light-1">
-                            <i class="fas fa-lightbulb device-icon"></i>
-                        </div>
-                        <p class="device-label">Kitchen Light</p>
                     </div>
-                    <!-- <div class="device-item">
-                        <div class="device-circle fan-control" data-device-type="fan" data-device-id="kitchen-fan-1" data-current-speed="0">
-                            <i class="fas fa-fan device-icon fan-icon"></i>
-                            <div class="fan-speed-indicator">
-                                <span class="speed-dot" data-speed="1"></span>
-                                <span class="speed-dot" data-speed="2"></span>
-                                <span class="speed-dot" data-speed="3"></span>
-                                <span class="speed-dot" data-speed="4"></span>
-                                <span class="speed-dot" data-speed="5"></span>
+                    <div>
+                        <div class="flex justify-between items-center mb-2 px-1">
+                            <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-widest"
+                                for="password">Access Key</label>
+                            <a class="text-[11px] font-bold text-primary hover:text-primary-container transition-colors uppercase tracking-wider"
+                                href="#">Forgot?</a>
+                        </div>
+                        <div class="relative group">
+                            <div
+                                class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-outline group-focus-within:text-primary transition-colors">
+                                <span class="material-symbols-outlined text-[20px]">lock</span>
                             </div>
+                            <input
+                                class="w-full bg-surface-container-low border border-white/5 rounded-xl py-4 pl-12 pr-4 text-on-surface placeholder:text-outline/40 focus:ring-2 focus:ring-primary/40 focus:bg-surface-bright focus:border-primary/50 transition-all duration-300"
+                                id="password" name="password" placeholder="••••••••" type="password" />
                         </div>
-                        <p class="device-label">Exhaust Fan</p>
-                    </div> -->
-                    <div class="device-item">
-                        <div class="device-circle" data-device-type="other" data-device-id="kitchen-fridge-1">
-                            <i class="fas fa-cube device-icon"></i>
-                        </div>
-                        <p class="device-label">Fridge</p>
                     </div>
-                    <div class="device-item">
-                        <div class="device-circle" data-device-type="socket" data-device-id="kitchen-socket-1">
-                            <i class="fas fa-plug device-icon"></i>
+                    <div class="flex items-center space-x-3 px-1">
+                        <div class="relative flex items-center">
+                            <input
+                                class="w-5 h-5 rounded bg-surface-container-highest border-0 text-primary focus:ring-offset-0 focus:ring-primary/40"
+                                id="remember" type="checkbox" />
                         </div>
-                        <p class="device-label">Microwave</p>
+                        <label class="text-sm font-medium text-on-surface-variant cursor-pointer" for="remember">Stay
+                            authenticated</label>
                     </div>
+                    <button
+                        class="w-full py-4 bg-[#2962FF] text-white rounded-xl font-bold text-sm uppercase tracking-widest shadow-[0_10px_20px_rgba(41,98,255,0.3)] hover:shadow-[0_15px_30px_rgba(41,98,255,0.5)] hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98]"
+                        type="submit">
+                        Authorize Entry
+                    </button>
+                </form>
+                <div class="mt-10 pt-8 border-t border-outline-variant/10 text-center">
+                    <p class="text-sm text-on-surface-variant">
+                        New system installation?
+                        <a class="text-primary font-bold hover:underline decoration-2 underline-offset-4 ml-1"
+                            href="#">Register Hub</a>
+                    </p>
+                </div>
+            </div>
+            <div class="mt-12 flex justify-center space-x-8">
+                <div
+                    class="flex items-center space-x-2 grayscale opacity-40 hover:opacity-80 transition-opacity cursor-default">
+                    <span class="material-symbols-outlined text-sm">verified_user</span>
+                    <span class="text-[10px] font-black uppercase tracking-widest">Encrypted</span>
+                </div>
+                <div
+                    class="flex items-center space-x-2 grayscale opacity-40 hover:opacity-80 transition-opacity cursor-default">
+                    <span class="material-symbols-outlined text-sm">fingerprint</span>
+                    <span class="text-[10px] font-black uppercase tracking-widest">Biometric Ready</span>
                 </div>
             </div>
         </div>
-
-        <!-- Bedroom Content -->
-        <div id="bedroom-content" class="room-content hidden">
-            <div class="room-section">
-                <div class="room-header">
-                    <h2>Bedroom Devices</h2>
-                    <i class="fas fa-cog settings-icon"></i>
-                </div>
-                <div class="device-row">
-                    <div class="device-item">
-                        <div class="device-circle" data-device-type="light" data-device-id="bedroom-light-1">
-                            <i class="fas fa-lightbulb device-icon"></i>
-                        </div>
-                        <p class="device-label">Bedroom Light</p>
-                    </div>
-                    <!-- <div class="device-item">
-                        <div class="device-circle fan-control" data-device-type="fan" data-device-id="bedroom-fan-1" data-current-speed="0">
-                            <i class="fas fa-fan device-icon fan-icon"></i>
-                            <div class="fan-speed-indicator">
-                                <span class="speed-dot" data-speed="1"></span>
-                                <span class="speed-dot" data-speed="2"></span>
-                                <span class="speed-dot" data-speed="3"></span>
-                                <span class="speed-dot" data-speed="4"></span>
-                                <span class="speed-dot" data-speed="5"></span>
-                            </div>
-                        </div>
-                        <p class="device-label">Fan</p>
-                    </div> -->
-                    <div class="device-item">
-                        <div class="device-circle" data-device-type="other" data-device-id="bedroom-tv-1">
-                            <i class="fas fa-tv device-icon"></i>
-                        </div>
-                        <p class="device-label">TV</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Bathroom Content -->
-        <div id="bathroom-content" class="room-content hidden">
-            <div class="room-section">
-                <div class="room-header">
-                    <h2>Bathroom Devices</h2>
-                    <i class="fas fa-cog settings-icon"></i>
-                </div>
-                <div class="device-row">
-                    <div class="device-item">
-                        <div class="device-circle" data-device-type="light" data-device-id="bathroom-light-1">
-                            <i class="fas fa-lightbulb device-icon"></i>
-                        </div>
-                        <p class="device-label">Bathroom Light</p>
-                    </div>
-                    <div class="device-item">
-                        <div class="device-circle" data-device-type="other" data-device-id="bathroom-heater-1">
-                            <i class="fas fa-thermometer-half device-icon"></i>
-                        </div>
-                        <p class="device-label">Heater</p>
-                    </div>
-                    <div class="device-item">
-                        <div class="device-circle" data-device-type="socket" data-device-id="bathroom-socket-1">
-                            <i class="fas fa-plug device-icon"></i>
-                        </div>
-                        <p class="device-label">Hairdryer</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Balcony Content -->
-        <div id="balcony-content" class="room-content hidden">
-            <div class="room-section">
-                <div class="room-header">
-                    <h2>Balcony Devices</h2>
-                    <i class="fas fa-cog settings-icon"></i>
-                </div>
-                <div class="device-row">
-                    <div class="device-item">
-                        <div class="device-circle" data-device-type="light" data-device-id="balcony-light-1">
-                            <i class="fas fa-lightbulb device-icon"></i>
-                        </div>
-                        <p class="device-label">Outdoor Light</p>
-                    </div>
-                    <!-- <div class="device-item">
-                        <div class="device-circle fan-control" data-device-type="fan" data-device-id="balcony-fan-1" data-current-speed="0">
-                            <i class="fas fa-fan device-icon fan-icon"></i>
-                            <div class="fan-speed-indicator">
-                                <span class="speed-dot" data-speed="1"></span>
-                                <span class="speed-dot" data-speed="2"></span>
-                                <span class="speed-dot" data-speed="3"></span>
-                                <span class="speed-dot" data-speed="4"></span>
-                                <span class="speed-dot" data-speed="5"></span>
-                            </div>
-                        </div>
-                        <p class="device-label">Outdoor Fan</p>
-                    </div> -->
-                    <div class="device-item">
-                        <div class="device-circle" data-device-type="other" data-device-id="balcony-camera-1">
-                            <i class="fas fa-camera device-icon"></i>
-                        </div>
-                        <p class="device-label">Camera</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Garage Content -->
-        <div id="garage-content" class="room-content hidden">
-            <div class="room-section">
-                <div class="room-header">
-                    <h2>Garage Devices</h2>
-                    <i class="fas fa-cog settings-icon"></i>
-                </div>
-                <div class="device-row">
-                    <div class="device-item">
-                        <div class="device-circle" data-device-type="light" data-device-id="garage-light-1">
-                            <i class="fas fa-lightbulb device-icon"></i>
-                        </div>
-                        <p class="device-label">Garage Light</p>
-                    </div>
-                    <div class="device-item">
-                        <div class="device-circle" data-device-type="other" data-device-id="garage-door-1">
-                            <i class="fas fa-door-open device-icon"></i>
-                        </div>
-                        <p class="device-label">Garage Door</p>
-                    </div>
-                    <div class="device-item">
-                        <div class="device-circle" data-device-type="socket" data-device-id="garage-socket-1">
-                            <i class="fas fa-plug device-icon"></i>
-                        </div>
-                        <p class="device-label">Charger</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- <div class="bottom-nav">
-            <button class="nav-item active">
-                <i class="fas fa-home"></i>
-                <span>Home</span>
-            </button>
-            <button class="nav-item">
-                <i class="fas fa-mobile-alt"></i>
-                <span>Devices</span>
-            </button>
-            <button class="nav-item">
-                <i class="fas fa-cog"></i>
-                <span>Settings</span>
-            </button>
-            <button class="nav-item">
-                <i class="fas fa-user"></i>
-                <span>Profile</span>
-            </button>
-        </div> -->
-    </div>
+    </main>
+    <footer class="p-8 text-center">
+        <p class="text-[10px] font-medium text-outline uppercase tracking-[0.2em] opacity-60">© 2024 Atmospheric
+            Intelligence Ecosystems. All Rights Reserved.</p>
+    </footer>
 </body>
-</html>
-    <script  src="/script.js"></script>
 
-  </body>
-  
 </html>
