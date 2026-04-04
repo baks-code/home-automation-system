@@ -26,11 +26,18 @@ app.post('/action', async (req, res) => {
 });
 
 app.use('/camera', createProxyMiddleware({
-  target: 'http://127.0.0.1:8001',
+  target: 'http://192.168.0.141:8001',
   pathRewrite: {
     '^/camera': '/stream'
   },
-  changeOrigin: true
+  changeOrigin: true,
+  ws: true,
+  selfHandleResponse: false,
+  onProxyRes: function (proxyRes, req, res) {
+    proxyRes.headers['Cache-Control'] = 'no-cache, private';
+    // Remove any content-length that could truncate the stream
+    delete proxyRes.headers['content-length'];
+  }
 }));
 
 app.listen(8000, () => console.log("Server running"));

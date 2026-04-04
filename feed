@@ -1,0 +1,53 @@
+import io
+import time
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from picamera2 import Picamera2
+
+# Setup camera with a fixed framerate to reduce CPU 'thrashing'
+picam2 = Picamera2()
+config = picam2.create_video_configuration(main={"size": (640, 480)})
+picam2.configure(config)
+picam2.start()
+
+class StreamHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == '/stream':
+            self.send_response(200)
+            self.send_header('Age', 0)
+            self.send_header('Cache-Control', 'no-cache, private')
+            self.send_header('Pragma', 'no-cache')
+            self.send_header('Content-Type', 'multipart/x-mixed-replace; boundary=frame')
+            self.end_headers()
+
+            # Create a persistent buffer to reuse memory
+            buffer = io.BytesIO()
+
+            try:
+                while True:
+                    # Clear the buffer for the next frame
+                    buffer.seek(0)
+                    buffer.truncate()
+                    
+                    # HARDWARE ENCODING: Direct to JPEG via capture_file
+                    # This is significantly faster on Pi 2 than PIL/capture_array
+                    picam2.capture_file(buffer, format='jpeg')
+                    
+                    frame_bytes = buffer.getvalue()
+
+                    self.wfile.write(b'--frame\r\n')
+                    self.send_header('Content-Type', 'image/jpeg')
+                    self.send_header('Content-Length', len(frame_bytes))
+                    self.end_headers()
+                    self.wfile.write(frame_bytes)
+                    self.wfile.write(b'\r\n')
+                    
+                    # Cap the frame rate to ~10 FPS to keep the Pi 2 cool
+                    time.sleep(0.1) 
+            except Exception as e:
+                print(f"Client disconnected: {e}")
+        else:
+            self.send_error(404)
+
+server = HTTPServer(('0.0.0.0', 8001), StreamHandler)
+print("Hardware-accelerated stream on port 8001...")
+server.serve_forever()
