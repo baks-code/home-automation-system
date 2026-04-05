@@ -64,6 +64,9 @@ app.post('/action', async (req, res) => {
         } else if (deviceID === "motionSensor") {
             targetPath = "/motion/" + (newState ? "on" : "off");
             eventType = newState ? "MOTION_ENABLED" : "MOTION_DISABLED";
+        }else if (deviceID === "doorSensor") {
+            targetPath = "/door/" + (newState ? "on" : "off");
+            eventType = newState ? "DOOR_ENABLED" : "DOOR_DISABLED";
         }
 
         // 2. Perform the fetch to the hardware
@@ -152,6 +155,30 @@ app.post('/motion-event', (req, res) => {
     const info = db.prepare('INSERT INTO event_history (event_type, url) VALUES (?, ?)').run('MOTION', image_link || null);
     res.json({ success: true, id: info.lastInsertRowid });
 });
+
+app.post('/door-event', (req, res) => {
+    const { status } = req.body;
+
+    console.log(`Door event received: ${status}`);
+
+    try {
+        // 1. Determine the standardized event type
+        const eventType = (status === "OPEN") ? "DOOR_OPENED" : "DOOR_CLOSED";
+
+        // 2. Insert into the database (better-sqlite3 is synchronous)
+        const stmt = db.prepare('INSERT INTO event_history (event_type, url) VALUES (?, ?)');
+        const info = stmt.run(eventType, null);
+
+        console.log(`Event Logged: ${eventType} (ID: ${info.lastInsertRowid})`);
+
+        // 3. Respond to the Raspberry Pi
+        res.json({ success: true, id: info.lastInsertRowid });
+    } catch (err) {
+        console.error("Database Error:", err.message);
+        res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+});
+
 
 app.get('/history', (req, res) => {
     try {
