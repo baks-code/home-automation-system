@@ -402,12 +402,13 @@
         </nav>
 
         <div class="mt-auto pt-6 border-t border-white/5 space-y-1">
-            <button
-                class="w-full py-3 px-4 bg-error-container text-on-error-container rounded-xl font-bold text-xs uppercase tracking-widest mb-3 hover:brightness-125 transition-all"
-                onclick="alert('Emergency Panic Triggered')">
-                Emergency Panic
-            </button>
-            <a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-on-surface text-xs transition-colors rounded-xl hover:bg-white/5"
+            <form method="POST" action="/logout">
+                <button
+                    class="w-full py-3 px-4 bg-error-container text-on-error-container rounded-xl font-bold text-xs uppercase tracking-widest mb-3 hover:brightness-125 transition-all">
+                    Logout
+                </button>
+            </form>
+            <!-- <a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-on-surface text-xs transition-colors rounded-xl hover:bg-white/5"
                 href="#">
                 <span class="material-symbols-outlined text-sm">help</span>
                 <span>Support</span>
@@ -416,7 +417,7 @@
                 href="#">
                 <span class="material-symbols-outlined text-sm">description</span>
                 <span>Logs</span>
-            </a>
+            </a> -->
         </div>
     </aside>
 
@@ -605,6 +606,12 @@
             <span class="material-symbols-outlined">settings</span>
             <span class="text-[10px] font-bold uppercase tracking-tighter">Settings</span>
         </a>
+        <form method="POST" action="/logout" class="flex flex-col items-center gap-1">
+            <button type="submit" class="flex flex-col items-center gap-1 text-on-surface-variant">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="text-[10px] font-bold uppercase tracking-tighter">Logout</span>
+            </button>
+        </form>
     </nav>
 
     <!-- ── Confirm Modal ── -->
