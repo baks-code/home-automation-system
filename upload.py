@@ -1,3 +1,4 @@
+import requests
 import subprocess
 from datetime import datetime
 
@@ -41,7 +42,6 @@ file_id = file.get('id')
 print("✅ Uploaded successfully!")
 print("File ID:", file_id)
 
-
 # Step 5: Make file publicly accessible
 permission = {
     'role': 'reader',
@@ -55,3 +55,8 @@ service.permissions().create(
 
 print("🔗 Public link:")
 print(f"https://drive.google.com/file/d/{file_id}/view")
+
+# after uploading to Google Drive
+requests.post("http://127.0.0.1:8000/motion-event", json={
+    "image_link": f"https://drive.google.com/file/d/{file_id}/view"
+})

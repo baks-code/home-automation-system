@@ -102,6 +102,21 @@ app.get('/devices-state', async (req, res) => {
     }
 });
 
+app.post('/motion-event', (req, res) => {
+    const { image_link } = req.body;
+
+    console.log("🚨 Motion event received:", image_link);
+
+    if (!image_link) {
+        return res.status(400).json({ success: false });
+    }
+
+    console.log(`📸 New motion image: ${image_link}`);
+
+    res.json({ success: true });
+});
+
+
 app.use('/camera', createProxyMiddleware({
     target: 'http://192.168.0.141:8001',
     pathRewrite: {

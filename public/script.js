@@ -1,6 +1,6 @@
 window.addEventListener('load', async () => {
 
-    loadTemperatureAndHumidity();
+    //loadTemperatureAndHumidity();
     loadDeviceStates()
 });
 async function loadTemperatureAndHumidity(){
@@ -50,7 +50,7 @@ function restoreDeviceState(device, isOn) {
 // ── State ──
 const state = {
     mainLight: false,
-    property: false,
+    motionSensor: false,
     doorSensor: false
 };
 
