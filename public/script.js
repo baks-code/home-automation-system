@@ -1,6 +1,6 @@
 window.addEventListener('load', async () => {
 
-    //loadTemperatureAndHumidity();
+    loadTemperatureAndHumidity();
     loadDeviceStates()
 });
 async function loadTemperatureAndHumidity(){

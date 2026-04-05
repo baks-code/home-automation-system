@@ -38,12 +38,33 @@ app.post('/action', async (req, res) => {
 
             devicesState[deviceID] = newState;
 
-            // ✅ Success
+
+            return res.json({
+                success: true,
+                message: `Switched ${deviceID} ${newState ? "ON" : "OFF"}`
+            });
+        }else if (deviceID === "motionSensor") {
+
+            const response = await fetch(
+                "http://127.0.0.1:4000/motion/" + (newState ? "on" : "off")
+            );
+
+            if (!response.ok) {
+                return res.status(500).json({
+                    success: false,
+                    message: "Failed to reach device"
+                });
+            }
+
+            devicesState[deviceID] = newState;
+
+  
             return res.json({
                 success: true,
                 message: `Switched ${deviceID} ${newState ? "ON" : "OFF"}`
             });
         }
+
     } catch (err) {
         console.error("Error communicating with device:", err);
         return res.status(500).json({
