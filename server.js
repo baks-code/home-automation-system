@@ -62,6 +62,13 @@ app.get('/login', (req, res) => {
     res.render('login');
 });
 
+app.post('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.clearCookie('connect.sid');
+        res.redirect('/login');
+    });
+});
+
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
     try {
