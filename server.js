@@ -1,7 +1,18 @@
 const express = require('express');
 const app = express();
-const sqlite = require('sqlite3');
-const db = new sqlite.Database('event_history.db');
+const Database = require('better-sqlite3');
+const db = new Database('event_history.db');
+
+
+db.exec(`
+    CREATE TABLE IF NOT EXISTS event_history (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        event_type TEXT NOT NULL,
+        url TEXT,
+        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_timestamp ON event_history(timestamp);
+`);
 
 
 app.use(express.static('public'));
@@ -53,11 +64,14 @@ app.post('/action', async (req, res) => {
         }
 
         // 3. LOG TO DATABASE (The "History" part)
-        const sql = `INSERT INTO event_history (event_type, url) VALUES (?, ?)`;
-        db.run(sql, [eventType, null], function (err) {
-            if (err) console.error("History Log Error:", err.message);
-            else console.log(`Event Logged: ${eventType} (ID: ${this.lastID})`);
-        });
+        try {
+    	    const stmt = db.prepare(`INSERT INTO event_history (event_type, url) VALUES (?, ?)`);
+    	    const info = stmt.run(eventType, null);
+    
+    	     console.log(`Event Logged: ${eventType} (ID: ${info.lastInsertRowid})`);
+	} catch (err) {
+    	     console.error("History Log Error:", err.message);
+	}
 
         // 4. Update local state and respond
         devicesState[deviceID] = newState;
@@ -125,28 +139,17 @@ app.get('/devices-state', async (req, res) => {
 //internal route for motion events
 app.post('/motion-event', (req, res) => {
     const { image_link } = req.body;
-    const sql = 'INSERT INTO event_history (event_type, url) VALUES (?, ?)';
-
-    db.run(sql, ['MOTION', image_link || null], function (err) {
-        if (err) return res.status(500).json({ success: false });
-        res.json({ success: true, id: this.lastID });
-    });
+    const info = db.prepare('INSERT INTO event_history (event_type, url) VALUES (?, ?)').run('MOTION', image_link || null);
+    res.json({ success: true, id: info.lastInsertRowid });
 });
 
 app.get('/history', (req, res) => {
-    const sql = `SELECT * FROM event_history ORDER BY timestamp DESC LIMIT 50`;
-
-    db.all(sql, [], (err, rows) => {
-        if (err) {
-            console.error(err.message);
-            // If there's an error, send an empty array so the page doesn't crash
-            return res.render('history', { events: [] });
-        }
-
-        // Ensure 'rows' is an array before sending
-        const eventList = Array.isArray(rows) ? rows : [];
-        res.render('history', { events: eventList });
-    });
+    try {
+        const rows = db.prepare('SELECT * FROM event_history ORDER BY timestamp DESC LIMIT 50').all();
+        res.render('history', { events: rows });
+    } catch (err) {
+        res.render('history', { events: [] });
+    }
 });
 
 
