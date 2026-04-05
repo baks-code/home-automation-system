@@ -2,7 +2,17 @@ const express = require('express');
 const app = express();
 const Database = require('better-sqlite3');
 const db = new Database('event_history.db');
+const bcrypt = require('bcrypt');
+const session = require('express-session');
 
+
+db.exec(`
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE,
+        password TEXT
+    )
+`);
 
 db.exec(`
     CREATE TABLE IF NOT EXISTS event_history (
@@ -14,10 +24,28 @@ db.exec(`
     CREATE INDEX IF NOT EXISTS idx_timestamp ON event_history(timestamp);
 `);
 
+app.use(session({
+    secret: 'super-secret-key-will-be-this-one',
+    resave: false,
+    saveUninitialized: false,
+    rolling: true,
+    cookie: {
+        secure: false, // true ONLY if using HTTPS (Cloudflare = ok later)
+        maxAge: 5 * 60 * 1000
+    }
+}));
 
 app.use(express.static('public'));
 app.use(express.json()); // 👈 IMPORTANT for POST data
 app.set('view engine', 'ejs');
+app.use(express.urlencoded({ extended: true }));
+
+app.use((req, res, next) => {
+    if (req.session.user) {
+        req.session._lastActivity = Date.now();
+    }
+    next();
+});
 
 //device state
 const devicesState = {
@@ -27,10 +55,49 @@ const devicesState = {
 };
 
 app.get('/', (req, res) => {
-    res.render('index');
+    res.redirect('login');
 });
 
-app.get('/dashboard', (req, res) => {
+app.get('/login', (req, res) => {
+    res.render('login');
+});
+
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+    try {
+        const user = db.prepare(
+            "SELECT * FROM users WHERE username = ?"
+        ).get(username);
+
+        if (!user) {
+            res.render('login', { error: "Invalid credentials" });
+        }
+
+        const match = await bcrypt.compare(password, user.password);
+
+        if (!match) {
+            res.render('login', { error: "Invalid credentials" });
+        }
+
+        // save session
+        req.session.user = {
+            id: user.id,
+            username: user.username
+        };
+
+console.log("✅ Session set:", req.session.user);
+
+        // redirect after login
+        res.redirect('/dashboard');
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Server error");
+    }
+});
+
+app.get('/dashboard', requireAuth, (req, res) => {
+
     try {
         // 1. Get the 4 most recent events (Images, Lights, System, etc.)
         const recentEvents = db.prepare(`
@@ -45,7 +112,7 @@ app.get('/dashboard', (req, res) => {
 });
 
 // Route that handles button click
-app.post('/action', async (req, res) => {
+app.post('/action', requireAuth, async (req, res) => {
     const deviceID = req.body.device_ID;
     const newState = req.body.new_State;
 
@@ -102,7 +169,7 @@ app.post('/action', async (req, res) => {
     //res.json({ message: `Switched ${deviceID} ${newState ? "ON" : "OFF"}` });
 });
 
-app.get('/temperature', async (req, res) => {
+app.get('/temperature', requireAuth, async (req, res) => {
     const MAX_RETRIES = 5;
     const DELAY_MS = 500;
 
@@ -141,7 +208,7 @@ app.get('/temperature', async (req, res) => {
     }
 });
 
-app.get('/devices-state', async (req, res) => {
+app.get('/devices-state', requireAuth, async (req, res) => {
     try {
         res.json(devicesState);
     } catch (err) {
@@ -180,7 +247,7 @@ app.post('/door-event', (req, res) => {
 });
 
 
-app.get('/history', (req, res) => {
+app.get('/history', requireAuth, (req, res) => {
     try {
         const rows = db.prepare('SELECT * FROM event_history ORDER BY timestamp DESC LIMIT 50').all();
         res.render('history', { events: rows });
@@ -189,5 +256,11 @@ app.get('/history', (req, res) => {
     }
 });
 
+function requireAuth(req, res, next) {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+    next();
+}
 
 app.listen(8000, () => console.log("Server running"));
