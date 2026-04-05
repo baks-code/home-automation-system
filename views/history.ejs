@@ -270,8 +270,9 @@
       <section class="mb-12">
         <h2 class="text-[10px] font-bold text-primary uppercase tracking-[0.2em] mb-4">Latest Motion Capture</h2>
 
-        <% // 1. Loop through 'events' and find the first one that has a URL const latestWithImage=events.find(e=> e.url
-          && e.url !== 'null' && e.url !== '');
+        <% 
+          // 1. Loop through 'events' and find the first one that has a URL
+          const latestWithImage=events.find(e=> e.url && e.url !== 'null' && e.url !== '');
           %>
 
           <% if (latestWithImage) { %>
