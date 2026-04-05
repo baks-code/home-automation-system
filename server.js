@@ -31,7 +31,17 @@ app.get('/', (req, res) => {
 });
 
 app.get('/dashboard', (req, res) => {
-    res.render('dashboard');
+    try {
+        // 1. Get the 4 most recent events (Images, Lights, System, etc.)
+        const recentEvents = db.prepare(`
+            SELECT * FROM event_history 
+            ORDER BY timestamp DESC LIMIT 4
+        `).all();
+        res.render('dashboard', { recentEvents });
+    } catch (err) {
+        console.error("Dashboard DB Error:", err);
+        res.render('dashboard', { recentEvents: []});
+    }
 });
 
 // Route that handles button click
@@ -65,13 +75,13 @@ app.post('/action', async (req, res) => {
 
         // 3. LOG TO DATABASE (The "History" part)
         try {
-    	    const stmt = db.prepare(`INSERT INTO event_history (event_type, url) VALUES (?, ?)`);
-    	    const info = stmt.run(eventType, null);
-    
-    	     console.log(`Event Logged: ${eventType} (ID: ${info.lastInsertRowid})`);
-	} catch (err) {
-    	     console.error("History Log Error:", err.message);
-	}
+            const stmt = db.prepare(`INSERT INTO event_history (event_type, url) VALUES (?, ?)`);
+            const info = stmt.run(eventType, null);
+
+            console.log(`Event Logged: ${eventType} (ID: ${info.lastInsertRowid})`);
+        } catch (err) {
+            console.error("History Log Error:", err.message);
+        }
 
         // 4. Update local state and respond
         devicesState[deviceID] = newState;
