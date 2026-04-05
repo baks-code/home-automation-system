@@ -193,15 +193,13 @@ app.post('/motion-event', (req, res) => {
         const info = insert.run('motion_image', image_link || null);
         
         console.log(`Saved event ID: ${info.lastInsertRowid}`);
+        console.log(`image link: ${image_link}`);
         res.json({ success: true, id: info.lastInsertRowid });
+        
     } catch (err) {
         console.error("DB Error:", err);
         res.status(500).json({ success: false });
     }
-
-    console.log(`image link: ${image_link}`);
-
-    res.json({ success: true });
 });
 
 app.get('/history', (req, res) => {

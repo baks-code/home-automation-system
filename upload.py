@@ -22,7 +22,7 @@ subprocess.run(["rpicam-still", "-o", image_path])
 
 # Step 2: Prepare timestamped filename
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-file_name = f"motion_captured_@_{timestamp}.jpg"
+file_name = f"motion_captured_@_{timestamp}"
 
 
 # Step 3: Upload to Cloudinary
