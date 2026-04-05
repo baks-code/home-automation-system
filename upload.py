@@ -2,13 +2,21 @@ import requests
 import subprocess
 from datetime import datetime
 
-from googleapiclient.discovery import build
-from googleapiclient.http import MediaFileUpload
-from google.oauth2.credentials import Credentials
+import cloudinary
+import cloudinary.uploader
+
+# --- CONFIGURATION ---
+# Replace these with your actual details from the Cloudinary Dashboard
+cloudinary.config( 
+  cloud_name = "dmun4qikp", 
+  api_key = "583514636122767", 
+  api_secret = "Olavm7h6Rx7jFvlzRPVJJXL0SaM",
+  secure = True
+)
 
 
 # Step 1: Capture image
-image_path = "image.jpg"
+image_path = "temp_image.jpg"
 
 subprocess.run(["rpicam-still", "-o", image_path])
 
@@ -16,47 +24,29 @@ subprocess.run(["rpicam-still", "-o", image_path])
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 file_name = f"motion_captured_@_{timestamp}.jpg"
 
-# Step 3: Authenticate Google Drive
-SCOPES = ['https://www.googleapis.com/auth/drive.file']
-creds = Credentials.from_authorized_user_file('token.json', SCOPES)
 
-service = build('drive', 'v3', credentials=creds)
+# Step 3: Upload to Cloudinary
 
+try:
+    # 3. Upload file
+    # 'public_id' sets the filename in the cloud
+    upload_result = cloudinary.uploader.upload(
+        image_path, 
+        public_id = file_name,
+        folder = "motion_captures" # Keeps your cloud organized
+    )
 
-# Step 4: Upload file
+    # Step 4: Get link
+    
+    image_url = upload_result['secure_url']
 
-file_metadata = {
-    'name': file_name
-}
+    print(f"✅ Uploaded successfully!")
+    print(f"🔗 Image URL: {image_url}")
 
-media = MediaFileUpload(image_path, mimetype='image/jpeg')
+    # Step 5: send to web server
+    requests.post("http://127.0.0.1:8000/motion-event", json={
+        "image_link": image_url
+    })
 
-file = service.files().create(
-    body=file_metadata,
-    media_body=media,
-    fields='id'
-).execute()
-
-file_id = file.get('id')
-
-print("✅ Uploaded successfully!")
-print("File ID:", file_id)
-
-# Step 5: Make file publicly accessible
-permission = {
-    'role': 'reader',
-    'type': 'anyone'
-}
-
-service.permissions().create(
-    fileId=file_id,
-    body=permission
-).execute()
-
-print("🔗 Public link:")
-print(f"https://drive.google.com/file/d/{file_id}/view")
-
-# after uploading to Google Drive
-requests.post("http://127.0.0.1:8000/motion-event", json={
-    "image_link": f"https://drive.google.com/file/d/{file_id}/view"
-})
+except Exception as e:
+    print(f"❌ Upload failed: {e}")
