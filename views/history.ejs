@@ -71,6 +71,18 @@
     },
   }
 </script>
+
+
+
+
+
+<!-- Remove your current DataTables CSS and replace with: -->
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.7/css/dataTables.dataTables.min.css"/>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/2.3.7/js/dataTables.min.js"></script>
+
+
+
 <style>
   .material-symbols-outlined {
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -110,6 +122,81 @@
   #imageModal.hidden {
     display: none;
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Control bar alignment */
+div.dt-layout-row {
+  display: flex !important;
+  align-items: center !important;
+  padding: 1rem 1.5rem !important;
+}
+
+div.dt-layout-cell {
+  padding: 0 !important;
+}
+
+/* Table padding to match your design */
+table.dataTable thead th,
+table.dataTable thead td {
+  padding: 1rem 1.5rem !important;
+}
+
+table.dataTable tbody td {
+  padding: 1.25rem 1.5rem !important;
+}
+
+/* Search input dark styling */
+div.dt-search input {
+  background: rgba(28, 29, 36, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #f1f1f1 !important;
+  border-radius: 0.5rem !important;
+  padding: 0.4rem 0.75rem !important;
+}
+
+/* Entries dropdown */
+div.dt-length select {
+  background: rgba(28, 29, 36, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #f1f1f1 !important;
+  border-radius: 0.5rem !important;
+  padding: 0.3rem 0.5rem !important;
+}
+
+/* Pagination padding */
+div.dt-paging {
+  padding: 0.75rem 1.5rem !important;
+}
+
+/* Current page button */
+div.dt-paging button.current {
+  background: rgba(41, 98, 255, 0.2) !important;
+  color: #2962ff !important;
+  border-radius: 0.5rem !important;
+  font-weight: bold !important;
+}
+
+div.dt-paging button {
+  color: #a1a3af !important;
+  border-radius: 0.5rem !important;
+}
+</style>
+
+
+
 </style>
 </head>
 
@@ -172,43 +259,58 @@
       </header>
 
       <!-- Latest Motion Capture -->
-      <section class="mb-12">
-        <h2 class="text-[10px] font-bold text-primary uppercase tracking-[0.2em] mb-4">Latest Motion Capture</h2>
-        <div class="relative overflow-hidden rounded-[2rem] obsidian-card group">
-          <div class="aspect-[21/9] w-full relative">
-            <img alt="Latest motion capture"
-              class="w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105"
-              src="https://res.cloudinary.com/dmun4qikp/image/upload/v1775357278/motion_captures/motion_captured_%40_2026-04-05_04-47-54.jpg.jpg"/>
-            <div class="absolute inset-0 bg-gradient-to-t from-surface-dim/90 via-transparent to-transparent"></div>
-            <!-- Live badge — matches login's glow style -->
-            <div class="absolute top-6 left-6 glass-panel px-3 py-1.5 rounded-full flex items-center space-x-2">
-              <span class="w-2 h-2 rounded-full bg-error animate-pulse shadow-[0_0_8px_rgba(255,180,171,0.8)]"></span>
-              <span class="text-[10px] font-black uppercase tracking-widest text-on-surface">Live</span>
-            </div>
-            <div class="absolute bottom-6 left-8">
-              <h3 class="text-2xl font-bold text-on-surface">Unrecognized Vehicle</h3>
-              <p class="text-on-surface-variant text-sm mt-1">Main Driveway • 14:30:45 Today</p>
-            </div>
-          </div>
+<section class="mb-12">
+  <h2 class="text-[10px] font-bold text-primary uppercase tracking-[0.2em] mb-4">Latest Motion Capture</h2>
+  
+  <% 
+    // 1. Loop through 'events' and find the first one that has a URL
+    const latestWithImage = events.find(e => e.url && e.url !== 'null' && e.url !== ''); 
+  %>
+
+  <% if (latestWithImage) { %>
+    <div class="relative overflow-hidden rounded-[2rem] obsidian-card group">
+      <div class="aspect-[21/9] w-full relative">
+        <img alt="Latest motion capture"
+          class="w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105"
+          src="<%= latestWithImage.url %>"/>
+        
+        <div class="absolute inset-0 bg-gradient-to-t from-surface-dim/90 via-transparent to-transparent"></div>
+        
+        <div class="absolute top-6 left-6 glass-panel px-3 py-1.5 rounded-full flex items-center space-x-2">
+          <span class="w-2 h-2 rounded-full bg-error animate-pulse shadow-[0_0_8px_rgba(255,180,171,0.8)]"></span>
+          <span class="text-[10px] font-black uppercase tracking-widest text-on-surface">Live</span>
         </div>
-      </section>
+
+        <div class="absolute bottom-6 left-8">
+          <h3 class="text-2xl font-bold text-on-surface"><%= latestWithImage.event_type %></h3>
+          <p class="text-on-surface-variant text-sm mt-1">Main Driveway • <%= latestWithImage.timestamp %></p>
+        </div>
+      </div>
+    </div>
+  <% } else { %>
+    <!-- Fallback if no images are found in the list -->
+    <div class="rounded-[2rem] obsidian-card p-12 text-center border border-white/5 opacity-40">
+      <p class="text-on-surface-variant text-sm italic">No image captures found in recent history.</p>
+    </div>
+  <% } %>
+</section>
+
 
       <!-- History Log -->
       <section>
         <h2 class="text-[10px] font-bold text-primary uppercase tracking-[0.2em] mb-4">History Log</h2>
         <div class="obsidian-card rounded-[2rem] overflow-hidden">
           <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
+            <table id="eventTable" class="w-full text-left border-collapse">
               <thead>
                 <tr class="border-b border-white/8 text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">
                   <th class="px-6 py-4">Event Type</th>
-                  <th class="px-6 py-4">Location</th>
                   <th class="px-6 py-4">Timestamp</th>
                   <th class="px-6 py-4 text-right">Action</th>
                 </tr>
               </thead>
               <tbody class="text-sm">
-                <tr class="history-row cursor-pointer transition-colors border-b border-white/5"
+                <!-- <tr class="history-row cursor-pointer transition-colors border-b border-white/5"
                     onclick="openModal('Human Activity', 'Front Door', '12:15 PM', 'https://lh3.googleusercontent.com/aida-public/AB6AXuBCq-Rq_Qe-mau44RXNWruxo_7zXgXl1NntReqHWKxwKpS9_ZYV-ntL2wTaO2cDHqRFtJqqmc8CPm5k35yrZY9P0gqm3ymhHG9DUt-u24u8Ddfaz4xVkiugc-rr8xOax-kCIHtAXQc__-EVyqcbmMl7kqEDmhFeToPCyGV63KF-zIOfIKerJTcAe8l3bEE7mE2SC82x9qDWv7A9Lne-NmX2wMeVFmRy8czxNCl1Y3mjP1kb7EsnhwRdzG_igjH4asQOrmPK43CegwiC')">
                   <td class="px-6 py-5">
                     <div class="flex items-center space-x-3">
@@ -216,11 +318,39 @@
                       <span class="font-bold text-on-surface">Human Activity</span>
                     </div>
                   </td>
-                  <td class="px-6 py-5 text-on-surface-variant">Front Door</td>
                   <td class="px-6 py-5 text-on-surface-variant">Mar 24, 12:15 PM</td>
                   <td class="px-6 py-5 text-right text-primary font-bold text-xs uppercase tracking-widest">View</td>
-                </tr>
-                <tr class="history-row cursor-pointer transition-colors border-b border-white/5"
+                </tr> -->
+
+<% events.forEach(event => { %>
+  <tr class="history-row cursor-pointer transition-colors border-b border-white/5"
+      onclick="openModal('<%= event.event_type %>', 'Location', '<%= event.timestamp %>', '<%= event.url %>')">
+    
+    <td class="px-6 py-5">
+      <div class="flex items-center space-x-3">
+        <span class="material-symbols-outlined text-primary-fixed-dim">
+          <%= event.event_type === 'MOTION' ? 'person' : event.event_type === 'SYSTEM_START' ? 'settings' : event.event_type === 'LIGHT_ON' ? 'lightbulb' : 'lightbulb_outline' %>
+        </span>
+        <span class="font-bold text-on-surface"><%= event.event_type %></span>
+      </div>
+    </td>
+
+    <td class="px-6 py-5 text-on-surface-variant"><%= event.timestamp %></td>
+
+    <!-- THE UPDATED VIEW CELL -->
+    <td class="px-6 py-5 text-right text-primary font-bold text-xs uppercase tracking-widest">
+      <% if (event.url && event.url !== 'null' && event.url !== '') { %>
+        View
+      <% } %>
+    </td>
+
+  </tr>
+<% }); %>
+
+
+
+
+                <!-- <tr class="history-row cursor-pointer transition-colors border-b border-white/5"
                     onclick="openModal('Animal Alert', 'Backyard Pool', '10:04 AM', 'https://lh3.googleusercontent.com/aida-public/AB6AXuB5cWt4w8RqqYSKxh0V5C9Ik7nAX1pAJJA9OJO3LL4iVSxJ6zTcOw_r9Pufjx5nZcidDr-mzXhOP3OeAB_ME_t8BFNfi_m42-mf5p4D_hXufH-E_IBLGy2tNwubfbpeOZmo3I4Rddzl4iygPHs8H3BpTeZJRGeL3RjR-CkGwtrFPiS1mlNXVWlDViJSKmLqYFZ0GocA3BASw4EO7Z4YHab2NZvDrjdejH0AELBJldpswwpvl4KHuxlSq5StAM5_GQAW2AnJ6QAmFy0K')">
                   <td class="px-6 py-5">
                     <div class="flex items-center space-x-3">
@@ -267,7 +397,9 @@
                   <td class="px-6 py-5 text-on-surface-variant">Upper Hallway</td>
                   <td class="px-6 py-5 text-on-surface-variant">Mar 23, 11:58 PM</td>
                   <td class="px-6 py-5 text-right text-primary font-bold text-xs uppercase tracking-widest">View</td>
-                </tr>
+                </tr> -->
+
+
               </tbody>
             </table>
           </div>
@@ -303,6 +435,15 @@
   </div>
 
   <script>
+
+$(document).ready(function() {
+            // 2. Initialize the DataTable
+            $('#eventTable').DataTable({
+                "order": [[ 0, "desc" ]], // Show newest ID first
+                "pageLength": 10          // Show 10 rows at a time
+            });
+        });
+
     function openModal(type, location, time, imgSrc) {
       const modal = document.getElementById('imageModal');
       document.getElementById('modalImage').src = imgSrc;
