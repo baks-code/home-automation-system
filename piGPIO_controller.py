@@ -20,7 +20,7 @@ GPIO.setup(PIN_MOTION, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        
+        global motion_enabled 
         parsed_path = urllib.parse.urlparse(self.path)
         path = parsed_path.path
 
@@ -42,7 +42,7 @@ class Handler(BaseHTTPRequestHandler):
             self.wfile.write(b"Light OFF")
 
         elif path == "/motion/on":
-            global motion_enabled
+            motion_enabled
             motion_enabled = True
 
             self.send_response(200)
@@ -50,7 +50,7 @@ class Handler(BaseHTTPRequestHandler):
             self.wfile.write(b"Motion ENABLED")
 
         elif path == "/motion/off":
-            global motion_enabled
+            motion_enabled
             motion_enabled = False
 
             self.send_response(200)
@@ -77,7 +77,7 @@ def monitor_motion():
 
     while True:
         if not motion_enabled:
-            time.sleep(5)
+            time.sleep(0.5)
             continue
 
         current_input = GPIO.input(PIN_MOTION)
@@ -100,7 +100,7 @@ def monitor_motion():
                 print("Motion cleared")
                 motion_state = False
 
-        time.sleep(2)
+        time.sleep(0.5)
 
 # start thread
 threading.Thread(target=monitor_motion, daemon=True).start()
